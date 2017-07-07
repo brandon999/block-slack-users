@@ -4,7 +4,6 @@ chrome.extension.sendMessage({}, function(response) {
 		clearInterval(readyStateCheckInterval);
 
 		blockedUsers = [];
-		onlyBlockDMs = false;
 		enableExtension = false;
 
 		var is_dm_window = function(){
@@ -33,11 +32,9 @@ chrome.extension.sendMessage({}, function(response) {
 
 		chrome.storage.sync.get({
 			blockedUsers: "",
-			onlyBlockDMs: false,
 			enableExtension: true
 		}, function(items) {
 			blockedUsers = items.blockedUsers.split(',');
-			onlyBlockDMs = items.onlyBlockDMs;
 			enableExtension = items.enableExtension;
 
 			if (enableExtension == false){
@@ -46,7 +43,7 @@ chrome.extension.sendMessage({}, function(response) {
 
 			// Add function to be called everytime a new node is inserted in message_div
 			message_div.bind('DOMNodeInserted', function(event){
-				if (onlyBlockDMs && !is_dm_window()) {
+				if (is_dm_window()) {
 					return
 				}
 
